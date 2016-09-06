@@ -1,0 +1,23 @@
+{
+  "name": "ds",
+  "version": "0.0.1",
+  "description": "data flow",
+  "main": "libs/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anaphalis/ds.git"
+  },
+  "keywords": [
+    "data",
+    "flow"
+  ],
+  "author": "anaphalis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Anaphalis/ds/issues"
+  },
+  "homepage": "https://github.com/Anaphalis/ds#readme"
+}
