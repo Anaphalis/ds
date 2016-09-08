@@ -1,0 +1,38 @@
+{
+  "name": "todomvc",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "enzyme": "^2.4.1",
+    "react-addons-test-utils": "^15.3.0",
+    "react-scripts": "^0.4.0"
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "todomvc-app-css": "^2.0.6",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.2.0",
+    "babel-core": "^5.6.18",
+    "babel-loader": "^5.1.4",
+    "babel-plugin-react-transform": "^1.1.0",
+    "expect": "^1.8.0",
+    "express": "^4.13.3",
+    "jsdom": "^5.6.1",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.12.3",
+    "expect": "^1.8.0",
+    "react-addons-test-utils": "^0.14.0",
+    "react-transform-hmr": "^1.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "test": "react-scripts test"
+  }
+}
