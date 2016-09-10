@@ -3,13 +3,13 @@
 
 可以在react中管理组件状态，也可以在MV*框架中管理controller/viewmode相互之间的数据交互，或者作为自定义事件总线使用
 
-#examples
+### examples
 [基本使用](https://github.com/Anaphalis/ds/tree/master/examples/base)
 [结合react中使用](https://github.com/Anaphalis/ds/tree/master/examples/todomvc-react)
 [模仿redux接口](https://github.com/Anaphalis/ds/tree/master/examples/todomvc-redux)
 
 
-#### usage
+### usage
 
 ```javascript
   import {DS,IM} from 'ud-ds'
@@ -35,7 +35,7 @@
   DS.regist('world',function(data){
     console.log('world:',data)
   });
-  //可以注册根数据源下的某一个对象，对象不存在也可以注册，必须是对象回调才会被触发
+  //可以注册根数据源下的某一个对象，对象不存在也可以注册。必须是普通js对象，不能是值或其他复杂对象，回调才会被触发
   DS.regist('world.asia',function(data){
     console.log('world.asia:',data)
   })
