@@ -8,7 +8,6 @@ import {isRawObject} from './util';
 import IM from './im';
 function DS(pathString,value){
   if(value === undefined){
-    //get模式,加上代理这里估计要改
     if(proxyMap[pathString]){
       pathString = proxyMap[pathString]['eventType'];
     }
@@ -43,6 +42,7 @@ DS.getDataByPath = function(pathString){
 DS.create = function(root){
   if(!ds[root])ds[root] = {};
 }
+//wrap此方法可实现中间件
 DS.setDataByPath = function(pathString,value){
   //console.log('DS setDataByPath',pathString);
   var order = {pathString:pathString,value:value};
@@ -89,7 +89,7 @@ DS.getProxyPath = function(proxyPathString){
 DS.upsert = function(pathString,value){
   if(!isRawObject(value))return console.error('参数错误，必须为对象');
   if(!DS(pathString)){
-    DS(pathString,value);//2016-8-15修改，使未创建过的数据源也能直接upsert
+    DS(pathString,value);
     return;
   }
   var _val = IM(DS(pathString));
