@@ -14,8 +14,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //数据源本体
 //将所有的rawObejct都转化成Cell对象
-//把数据的引用更新正确，并且记录正确的广播列表
-//创建镜像，用来存储更新后的对象，但是要确定确实数据更新了
+//还需要么，就是把数据的引用更新正确，并且记录正确的广播列表
+//创建镜像，用来存储新的对象，但是要确定确实数据更新了
 //通过路径找到节点，将路径记入
 //如果节点不存在，创建节点并赋值  整个过程要记录更新列表，这个必须在前
 //观察节点，这时节点如果引用没有变化，则返回，不管里面变没变
@@ -28,6 +28,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //输入的value至少是空对象，undefined和null滚粗，必须是rawObejct,不是rawObejct报错
 //这里不再验证value是rawObejct,此类不对外开放
 //注意path一律指代数组 pathString 指代字符串
+
+//将递归改为迭代
 
 function Cell(pathString, value, ds) {
   //console.log('新的cell',pathString,value);
@@ -133,6 +135,7 @@ Cell.prototype.updateNode = function () {
   //parent[pathstr]对currentNode进行赋值
   var _updateNode = function _updateNode(newVal, oldVal, currentPath, currentNode, parent, pathstr) {
     //递归更新
+
     var ntype = (0, _util.isRawObject)(newVal);
     var otype = (0, _util.isRawObject)(oldVal);
     //最简单的处理方式就是：数据结构不能变
@@ -145,6 +148,7 @@ Cell.prototype.updateNode = function () {
     } else if (ntype !== otype) {
       if (ntype === true) {
         //原节点是值，新节点是对象,新节点
+
         parent[pathstr] = newVal; //修改currentNode没问题，但是直接赋值，这个currentNode就和外面的currentNode没关系了
         //将更新的路径加入队列
         var _pathList = getAllPath(newVal, currentPath);
@@ -156,6 +160,7 @@ Cell.prototype.updateNode = function () {
         parent[pathstr] = newVal; //修改currentNode没问题，但是直接赋值，这个currentNode就和外面的currentNode没关系了
         var _pathList = getAllPath(oldVal, currentPath);
         _pathList.forEach(function (path) {
+          //console.log('-------------',path)
           updateList[path] = 'recycle';
         });
         //console.log('检查updateList recycle1',updateList)
@@ -186,33 +191,36 @@ Cell.prototype.updateNode = function () {
       //处理新建
       ndiffo.forEach(function (field) {
         //console.log('新建',field)
-        currentNode[field] = newVal[field]; //将数据加入镜像
+        currentNode[field] = newVal[field]; //将新数据加入镜像
+        //如果新数据不是普通对象，就不用添加路径了
         if ((0, _util.isRawObject)(newVal[field])) {
           var _path = currentPath.concat();
           _path.push(field);
           updateList[_path.join('.')] = 'create';
+          //将newVal[field]中所有的路径加入到更新队列
+          var _pathList = getAllPath(newVal[field], _path);
+          //console.log('获取的路径',_pathList,newVal[field],_currentPath)
+          //console.log('检查updateList create2',updateList)
+          _pathList.forEach(function (path) {
+            updateList[path] = 'create';
+          });
+          //console.log(updateList)
         }
-        //将newVal[field]中所有的路径加入到更新队列
-        var _pathList = getAllPath(newVal[field], currentPath);
-        //console.log('获取的路径',_pathList,newVal[field])
-        //console.log('检查updateList create2',updateList)
-        _pathList.forEach(function (path) {
-          updateList[path] = 'create';
-        });
       });
       //处理删除
       odiffn.forEach(function (field) {
+        //没有需要添加到镜像的新节点
         if ((0, _util.isRawObject)(oldVal[field])) {
           var _path = currentPath.concat();
           _path.push(field);
           updateList[_path.join('.')] = 'recycle';
+          var _pathList = getAllPath(oldVal[field], _path);
+          _pathList.forEach(function (path) {
+            updateList[path] = 'recycle';
+          });
+          //console.log(updateList)
         }
-        var _pathList = getAllPath(oldVal[field], currentPath);
-        _pathList.forEach(function (path) {
-          updateList[path] = 'recycle';
-        });
       });
-      //处理更新
       inter.forEach(function (field) {
         if (newVal[field] !== oldVal[field]) {
           //这里是不是newVal[field]!==oldVal[field]

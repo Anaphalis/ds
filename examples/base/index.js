@@ -1,0 +1,39 @@
+var world = {
+  asia:{
+    'east-asia':{
+      china:'beijing',
+      japan:{
+        hokkaido:'aomori-ken'
+      }
+    }
+  },
+  europe:{
+    'nordic-europe':{
+      finland:'helsinki'
+    },
+    'eastern-europe':{
+      Croatia:'Zagreb'
+    }
+  }
+}
+DS.regist('world',function(data){
+  console.log('world:',data)
+});
+DS.regist('world.asia',function(data){
+  console.log('world.asia:',data)
+})
+DS.regist('world.asia.east-asia.japan',function(data){
+  console.log('world.asia.east-asia.japan:',data)
+})
+DS.regist('current',function(data){
+  console.log('current',data)
+})
+
+DS.upsert('world',world)
+DS('world')
+DS('world',{})
+DS.upsert('world.asia',{'east-asia':{'korea':'seoul','china':'beijing'}})
+DS('world.asia.east-asia',IM.modify(DS('world.asia.east-asia'),{remove:'china',upsert:{'japan':{captal:'tokyo'}}}))
+DS.proxy('current','world.asia.east-asia')
+DS.proxy('current','world.asia')
+DS.dropProxy('current')

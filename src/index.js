@@ -1,15 +1,14 @@
-//数据源对外接口部分
+//数据源接口部分
 //ds 数据源树形结构
 //setter 回调存放
 //ps 代理存放
-//caster
 import Nerv from './nerv';
 import EventBus from './event';
 import {isRawObject} from './util';
 import IM from './im';
 function DS(pathString,value){
   if(value === undefined){
-    //get模式
+    //get模式,加上代理这里估计要改
     if(proxyMap[pathString]){
       pathString = proxyMap[pathString]['eventType'];
     }
@@ -86,7 +85,7 @@ DS.getProxyPath = function(proxyPathString){
   if(!proxyMap.hasOwnProperty(proxyPathString))return false;
   return proxyMap[proxyPathString].eventType
 }
-//部分更新，只更新和增加，不删除
+//部分更新
 DS.upsert = function(pathString,value){
   if(!isRawObject(value))return console.error('参数错误，必须为对象');
   if(!DS(pathString)){
@@ -98,8 +97,7 @@ DS.upsert = function(pathString,value){
   DS(pathString,_val);
 }
 DS.destroy = function(root){
-  //销毁一个根数据源
-  delete DS.ds[root]
+  //销毁一个根数据源，其实很没有必要
 }
 DS.info = {
   destoryInfo:new SDO('destory'),

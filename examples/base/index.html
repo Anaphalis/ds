@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DS Example</title>
+  </head>
+  <body>
+    <div style="background-color: #eeeeee;display: inline-block;border: 1px solid #dddddd;">
+      <p style="padding-left:30px;">在控制台查看运行结果</p>
+      <code style="white-space:pre-wrap">
+        var world = {
+          asia:{
+            'east-asia':{
+              china:'beijing',
+              japan:{
+                hokkaido:'aomori-ken'
+              }
+            }
+          },
+          europe:{
+            'nordic-europe':{
+              finland:'helsinki'
+            },
+            'eastern-europe':{
+              Croatia:'Zagreb'
+            }
+          }
+        }
+        DS.regist('world',function(data){
+          console.log('world:',data)
+        });
+        DS.regist('world.asia',function(data){
+          console.log('world.asia:',data)
+        })
+        DS.regist('world.asia.east-asia.japan',function(data){
+          console.log('world.asia.east-asia.japan:',data)
+        })
+        DS.regist('current',function(data){
+          console.log('current',data)
+        })
+        DS.upsert('world',world)
+        DS('world')
+        DS('world',{})
+        DS.upsert('world.asia',{'east-asia':{'korea':'seoul','china':'beijing'}})
+        DS('world.asia.east-asia',IM.modify(DS('world.asia.east-asia'),{remove:'china',upsert:{'japan':{captal:'tokyo'}}}))
+        DS.proxy('current','world.asia.east-asia')
+        DS.proxy('current','world.asia')
+        DS.dropProxy('current')
+      <code>
+    <div>
+      <script src="../../dist/ds.js"></script>
+      <script src="index.js"></script>
+  </body>
+</html>

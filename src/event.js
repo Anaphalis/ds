@@ -5,10 +5,11 @@ function EventBus(){
 	//value:array[{cb}]
 	this.eventList = {};
 	this.dispatchEvent = function(event,data){
+		//发出事件的对象如果需要就扔进data里
 		if(!this.eventList[event]){
 			this.eventList[event] = new Array();
 		}
-		//取回调列表的快照，避免在执行回调时使用了有可能正在变化的回调列表
+		//复制一份确保不会遍历被修改的数组
 		var e = this.eventList[event].slice();
 		//console.log('[EventBus]',this.eventList);
 		e.forEach((cb)=>{
